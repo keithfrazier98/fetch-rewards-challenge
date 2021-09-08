@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon src/server.js",
+    "seed": "npx knex seed:run --specific=01-points.js",
+    "wipe": "npx knex seed:run --specific=00-points.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

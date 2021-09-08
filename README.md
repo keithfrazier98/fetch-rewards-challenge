@@ -1,6 +1,11 @@
 # fetch-rewards-challenge
 
-> This is a simple implementation of the basic directions defined in "Fetch Rewards Coding Exercise - Backend Software Engineering"
+> This is a simple implementation of the directions defined in "Fetch Rewards Coding Exercise - Backend Software Engineering"
+> > **The directions are in this directory for easy reference.**
+
+> These directions assume you have node.js and npm installed, if you dont:
+> > open your terminal and run the following command "npm install -g npm" or follow these directions https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
+
 
 ## technology (packages/dependencies) directly used
 
@@ -10,15 +15,19 @@
     - path
     - dotenv
     - pg
+    - heroku
 
-## access
+## access and overview
 
-    - code (public repository) : https://github.com/keithfrazier98/fetch-rewards-challenge
-    - deployed API: https://fetch-rewards-challenge.herokuapp.com/
+  - code (public repository) : https://github.com/keithfrazier98/fetch-rewards-challenge
+  - deployed API: https://fetch-rewards-challenge.herokuapp.com/
 
 I created a local server and a live server both connected to a live postgreSQL database (through elephant sql) to test the functionality of the code. This way you can either view the code online and use the live API to make requests, or you can download the code to view it then run a local server to handle the requests.
 
-> **The API is designed strictly against the directions, so the request bodies need to be made the exact way the data in the directions was presented.**
+> **The database is currently empty.**
+
+
+> **The API strictly adheres to the directions, so the request bodies need to be made the exact way the data in the directions was presented.**
 
 > **All requests can be made to the direct url, whether it be the live URL or a local URL (which will default to localhost:5000)**
 
@@ -64,6 +73,56 @@ _See Balance_
 
     - perform a get request to retrieve the points balance
       - because all requests are made to the direct url, if you access the live API through your browser it will simply perform the above-mentioned get request
+
+## current routes/middleware explination:
+
+
+_addTransaction_ 
+
+- the addTransaction function responds to the base route upon sending a post method request with a body containing an object with a timestamp, point value, and payer name
+- the function will take the data and call a function from the points.service file that will use the knex database connection (defined in the connection.js file) to send data to the database url, effectively posting it to the database
+- the function will return a status with a response containing the the payer and points information 
+
+_spendPoints_
+
+- the spendPoints function will respond to the base route upon sending a put method request with a body containing an amount of points to be spent
+- while there are points to be spent, the function will query the database for the oldest records of points that is not equal to zero. Then it will deduct these points from the points to be spent, and repeat this process until there are no more points to be spent
+- finally the function will respond with a status code and a body containing the amount of points spent and from which payer 
+
+_pointBalance_
+
+- the pointBalance function will respond to the base route upon sending a get method 
+- the function will query the database for all data then use a helper function to format the data
+- the function will respond with a status code and object displaying each payer and remaining points
+
+_pointArrayFromObject_
+- the pointArrayFromObject function is a helper function for the spendPoints and pointBalance functions
+- it takes a pointObject (being an object the keys as payers and values as points) 
+- it returns a point array containing a list of objects ({payer:"payerName", points:"pointValue"})
+
+_editPointObject_
+
+- the editPointObject function is a helper function for the spendPoints and pointBalance functions
+- it takes a payer, pointValue, pointObject (in that order)
+- it supplements an existing payers pointValue or creates a new [key,value] pair being a payer and pointValue 
+- it then returns the updated object
+
+
+## scripts
+
+     I have included scripts in the package.json file to seed the database with the same data as the example in the directions to this challenge, as well as wipe the database.
+
+_wipe database_
+
+    1. open your terminal in the cloned directory
+   
+    2. run "npm run wipe"
+
+_seed database_
+
+    1. open your terminal in the cloned directory
+    
+    2. run "npm run seed"
 
 ## comments:
 
