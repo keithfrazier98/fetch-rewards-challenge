@@ -6,9 +6,12 @@ const express = require('express')
 const cors = require('cors')
 const app = express()
 
+const pointsRouter = require('./points/points.router')
+
 app.use(cors())
 app.use(express.json())
 
+app.use('/', pointsRouter)
 
 
 
