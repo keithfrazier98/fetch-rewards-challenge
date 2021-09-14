@@ -141,3 +141,7 @@ I would implement more error handling and validation for requests._
 
 - further validation middleware
   - middleware functions in the points.controller file that checks if the body of a request adheres to the necessary format and content of the data expected by the following query functions as per the directions
+
+
+- asymptotic analysis
+  - analyze the middleware, how the data is being collected, how it is being parsed or sorted, what is the growth rate of the functions, can anything be more efficient?
